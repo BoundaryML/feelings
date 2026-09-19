@@ -1,0 +1,24 @@
+<!doctype html><html><head><meta charset="utf-8"><title>feelings card 2</title><link rel="stylesheet" href="_base.css"></head><body>
+<div class="rail"><div class="badge"><img src="lamb-mark.png" alt=""></div><div class="word">BAML</div></div>
+<div class="panel">
+  <h1>…and because it's a <em>real</em> language, it works on anything.</h1>
+  <div class="win">
+    <div class="bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="t">baml run</span></div>
+<pre class="sm"><span class="s">"SERVER ON FIRE"</span>.<span class="f">how</span>(<span class="s">"urgent"</span>)                             <span class="c">// </span><span class="r">0.96</span>
+<span class="s">"lunch at noon?"</span>.<span class="f">how</span>(<span class="s">"urgent"</span>)                             <span class="c">// </span><span class="r">0.13</span>
+<span class="ty">1000000</span>.<span class="f">feels</span>(<span class="s">"like a suspiciously round number"</span>)         <span class="c">// </span><span class="r">true</span>
+<span class="ty">1337</span>.<span class="f">feels</span>(<span class="s">"like a suspiciously round number"</span>)            <span class="c">// </span><span class="r">false</span>
+
+<span class="c">// a class = several judgments in ONE request → one typed value</span>
+<span class="k">class</span> <span class="ty">Triage</span> {
+  urgent: <span class="ty">bool</span>       @description(<span class="s">"Needs immediate attention?"</span>),
+  route: <span class="ty">Team</span>,
+  churn_risk: <span class="ty">float</span>  @description(<span class="s">"Likely to churn over this?"</span>),
+  mood: <span class="s">"calm"</span> | <span class="s">"concerned"</span> | <span class="s">"angry"</span>,
+}
+ticket.<span class="f">matches</span>&lt;<span class="ty">Triage</span>&gt;()
+<span class="c">// </span><span class="r">Triage { urgent: true, route: Technical, churn_risk: 0.56, mood: "angry" }</span></pre>
+  </div>
+  <div class="foot"><span>typed · generic · concurrent · testable</span><span>github.com/boundaryml/feelings</span></div>
+</div>
+</body></html>

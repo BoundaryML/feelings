@@ -1,0 +1,10 @@
+[package]
+name = "feelings"
+
+# Requires a toolchain with the `typesafeai` client: `baml toolchain use nightly`
+# (nightly ≥ 2026-09-20), or a local build via BAML_VERSION=/path/to/baml-cli.
+
+[scripts]
+main = "-f main"
+inbox = "-f inbox"
+demo = "-f demo"

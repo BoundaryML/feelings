@@ -1,0 +1,24 @@
+@font-face{font-family:"IBM Plex Mono";src:url(IBMPlexMono-Regular.ttf);font-weight:400}
+@font-face{font-family:"IBM Plex Mono";src:url(IBMPlexMono-Medium.ttf);font-weight:500}
+@font-face{font-family:"IBM Plex Mono";src:url(IBMPlexMono-SemiBold.ttf);font-weight:600}
+@font-face{font-family:"Instrument Serif";src:url(InstrumentSerif-Regular.ttf);font-weight:400}
+@font-face{font-family:"Instrument Serif";src:url(InstrumentSerif-Italic.ttf);font-style:italic}
+:root{--cream:#FBF7ED;--ink:#1A1612;--muted:#5C5852;--soft:#8A8580;--purple:#7C3AED;--rule:#E2DAC8}
+html,body{margin:0;padding:0}
+body{width:1200px;height:675px;background:var(--cream);display:flex;font-family:"IBM Plex Mono",monospace;color:var(--ink);overflow:hidden}
+.rail{width:150px;background:var(--purple);display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:44px 0}
+.badge{width:92px;height:92px;border-radius:999px;background:var(--cream);display:flex;align-items:center;justify-content:center}
+.badge img{width:60px;height:60px}
+.word{color:var(--cream);font-size:20px;font-weight:600;letter-spacing:8px;padding-left:8px}
+.panel{flex:1;display:flex;flex-direction:column;padding:38px 56px 30px 56px}
+h1{font-family:"Instrument Serif",serif;font-weight:400;font-size:44px;line-height:1.08;margin:0 0 18px;letter-spacing:-.01em}
+h1 em{font-style:italic;color:var(--purple)}
+.win{background:var(--ink);border-radius:14px;padding:18px 28px 22px;box-shadow:0 18px 40px rgba(26,22,18,.18);flex:1;display:flex;flex-direction:column}
+.bar{display:flex;align-items:center;gap:9px;margin-bottom:14px;color:var(--soft);font-size:15px}
+.bar .d{width:11px;height:11px;border-radius:50%;background:#3d3730}
+.bar .t{margin-left:auto}
+pre{margin:0;font-size:22px;line-height:1.5;color:#F1ECE0;white-space:pre;font-family:inherit}
+pre.sm{font-size:19px;line-height:1.45}
+.k{color:#C4B5FD;font-weight:500}.ty{color:#A78BFA}.s{color:#FBD38D}.c{color:#8A8580}.f{color:#F1ECE0;font-weight:500}.r{color:#7CE0B0}
+.foot{display:flex;justify-content:space-between;margin-top:14px;font-size:15px;color:var(--muted)}
+.foot b{color:var(--purple);font-weight:600}

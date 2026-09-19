@@ -1,0 +1,23 @@
+<!doctype html><html><head><meta charset="utf-8"><title>feelings card 1</title><link rel="stylesheet" href="_base.css"></head><body>
+<div class="rail"><div class="badge"><img src="lamb-mark.png" alt=""></div><div class="word">BAML</div></div>
+<div class="panel">
+  <h1>What if <em>feels</em> was a real, typed method?</h1>
+  <div class="win">
+    <div class="bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="t">urgent.baml</span></div>
+<pre><span class="k">function</span> <span class="f">main</span>(email: <span class="ty">string</span>) -> <span class="ty">string</span> {
+  <span class="k">if</span> (email.<span class="f">feels</span>(<span class="s">"urgent"</span>)) {
+    <span class="k">return</span> email.<span class="f">ask</span>(<span class="s">"Draft a reply"</span>);
+  }
+  <span class="s">"not urgent"</span>
+}
+
+<span class="c">// no new language. `feels` is one blanket impl, backed by Jev:</span>
+<span class="k">implements</span>&lt;<span class="ty">S</span>&gt; <span class="ty">Vibes</span> <span class="k">for</span> <span class="ty">S</span> {
+  <span class="k">function</span> <span class="f">feels</span>(self, q: <span class="ty">string</span>) -> <span class="ty">bool</span> {
+    <span class="f">Feels</span>(<span class="f">state_of</span>(self), q)
+  }
+}</pre>
+  </div>
+  <div class="foot"><span>Jev decides · an LLM writes · <b>BAML</b> types it</span><span>github.com/boundaryml/feelings</span></div>
+</div>
+</body></html>
