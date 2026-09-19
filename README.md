@@ -24,7 +24,7 @@ and everything else for free.
 
 ```sh
 git clone https://github.com/boundaryml/feelings && cd feelings
-baml toolchain use nightly       # needs the `typesafeai` client (nightly ≥ 2026-09-20)
+baml toolchain use nightly && baml toolchain update   # latest nightly
 
 cp .env.example .env             # TYPESAFE_API_KEY (Jev) + ANTHROPIC_API_KEY (for .ask)
 set -a; source .env; set +a

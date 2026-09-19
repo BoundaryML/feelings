@@ -1,6 +1,5 @@
 [package]
 name = "feelings"
 
-# Requires a toolchain with the `typesafeai` client: `baml toolchain use nightly`
-# (nightly ≥ 2026-09-20), or a local build via BAML_VERSION=/path/to/baml-cli.
+# Requires the latest nightly: `baml toolchain use nightly && baml toolchain update`
 
