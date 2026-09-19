@@ -2,8 +2,9 @@
 //
 //   if (email.feels("urgent")) { ... }          bool     — Jev Noul, thresholded at 0.5
 //   email.how("urgent")                          float    — Jev Noul, raw probability
-//   email.matches<Team>()                        T        — Jev Choice / one-request class fan-out
-//   email.judge<Mood>("What is the mood?")       T        — same, with explicit instructions
+//   email.matches<Team>()                        T        — Jev Choice: enum / literal union
+//   email.judge<Mood>("What is the mood?")       T        — same, with an explicit question
+//   ticket.fill<Triage>()                        T        — class: one request, one question per field
 //   email.ask("Draft a reply")                   string   — generative model, for when you need text
 //
 // The blanket `implements<S> Vibes for S` below is what makes this work on
@@ -17,12 +18,16 @@ interface Vibes {
     function feels(self, quality: string) -> bool throws unknown;
     /// Same question as `feels`, but you keep the probability and pick the threshold.
     function how(self, quality: string) -> float throws unknown;
-    /// Classify into T. T is an enum, a literal union, or a class of such fields
-    /// (a class becomes one request with one question per field).
+    /// Pick one of T's members. T must be an enum, a literal union, or an
+    /// optional/union of those (`Team?`, `Team | "hold"`); a class is rejected
+    /// before any HTTP — use `fill<T>` for that. The question is T's `@@description`.
     function matches<T>(self) -> T throws unknown;
-    /// `matches<T>` with explicit instructions — needed for literal unions,
+    /// `matches<T>` with an explicit question — required for literal unions,
     /// which carry no `@@description` of their own.
     function judge<T>(self, question: string) -> T throws unknown;
+    /// Fill every field of a class: one request, one question per field, one
+    /// typed value back. Field `@description`s are the questions.
+    function fill<T extends reflect.AnyClass>(self) -> T throws unknown;
     /// Free-form generation about this value (not Jev — Jev only classifies).
     function ask(self, instruction: string) -> string throws unknown;
 }
@@ -35,13 +40,35 @@ implements<S> Vibes for S {
         How(state_of(self), quality)
     }
     function matches<T>(self) -> T {
+        require_choice<T>();
         Matches<T>(state_of(self))
     }
     function judge<T>(self, question: string) -> T {
+        require_choice<T>();
         Judge<T>(state_of(self), question)
+    }
+    function fill<T extends reflect.AnyClass>(self) -> T {
+        Matches<T>(state_of(self))
     }
     function ask(self, instruction: string) -> string {
         Ask(state_of(self), instruction)
+    }
+}
+
+/// `matches<T>` is for picking one of a finite set. Reject a class (or anything
+/// else that isn't an enum / literal / union of those) before making a request.
+function require_choice<T>() -> void {
+    let ty = reflect.Type.of<T>();
+    let ok = match (ty.kind()) {
+        let _e: reflect.enum.Type => true,
+        let _l: reflect.literal.Type => true,
+        let _u: reflect.union.Type => true,
+        _ => false,
+    };
+    if (!ok) {
+        throw baml.errors.InvalidArgument {
+            message: `matches<T> and judge<T> need an enum or union, got ${ty}. For a class, use fill<T>().`,
+        };
     }
 }
 

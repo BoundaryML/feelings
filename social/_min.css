@@ -1,0 +1,11 @@
+@font-face{font-family:"IBM Plex Mono";src:url(IBMPlexMono-Regular.ttf);font-weight:400}
+@font-face{font-family:"IBM Plex Mono";src:url(IBMPlexMono-Medium.ttf);font-weight:500}
+html,body{margin:0;padding:0}
+body{width:1200px;height:700px;display:flex;align-items:center;justify-content:center;
+     background:linear-gradient(135deg,#ff2f8f 0%,#b63be8 50%,#6d3cf0 100%);font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+.win{background:#1c1226;border-radius:22px;box-shadow:0 30px 70px rgba(0,0,0,.4);padding:0 58px 44px;min-width:760px}
+.bar{height:74px;display:flex;align-items:center;position:relative;margin:0 -24px}
+.dot{width:16px;height:16px;border-radius:50%;background:#4b3a5f;margin-right:14px}
+.title{position:absolute;left:0;right:0;text-align:center;color:#9a8ab0;font-size:20px}
+pre{margin:0;font-size:30px;line-height:1.5;color:#efe9f7;white-space:pre;font-family:inherit}
+.k{color:#ff6b95}.f{color:#f7a8e0}.s{color:#e3d1ff}.c{color:#7a6a90}.r{color:#8ee8b8}

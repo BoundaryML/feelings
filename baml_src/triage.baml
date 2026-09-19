@@ -48,7 +48,7 @@ function sample_tickets() -> Ticket[] {
 
 function triage(t: Ticket) -> string {
     //# One request, four judgments — the class fields become Jev questions
-    let tri = t.matches<Triage>();
+    let tri = t.fill<Triage>();
     let tag = if (tri.urgent) {
         "🔥"
     } else {

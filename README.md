@@ -5,11 +5,10 @@
 and [BAML](https://boundaryml.com).
 
 ```baml
-function main(email: string) -> string {
-    if (email.feels("urgent")) {
-        return email.ask("Draft a reply");
-    }
-    "not urgent"
+let email = baml.io.input(null);
+
+if (email.feels("urgent")) {
+    baml.io.println(email.ask("Draft a reply"));
 }
 ```
 
@@ -30,7 +29,7 @@ baml toolchain use nightly       # needs the `typesafeai` client (nightly ≥ 20
 cp .env.example .env             # TYPESAFE_API_KEY (Jev) + ANTHROPIC_API_KEY (for .ask)
 set -a; source .env; set +a
 
-baml run main -- --email "prod is down and customers can't log in"
+echo "prod is down and customers can't log in" | baml run urgent
 baml run inbox -- --email "any chance you have 30 min next week to chat?"
 baml run demo                    # enums, literal unions, class fan-out, ints…
 baml test                        # offline — inspects the Jev requests, no key needed
@@ -64,10 +63,12 @@ else if (urgency >= 0.5) { log.info("Ask a follow-up question.") }
 else                     { log.info("It can wait.") }
 ```
 
-### 3. Route between descriptions with `.judge<T>()` + `match`
+### 3. Route between descriptions with `.matches<T>()` + `match`
 
-A literal union is a finite set of choices. Jev picks one; BAML's `match` is
-exhaustive, so forgetting a branch is a compile error.
+`T` must be a finite set of choices: an enum, a literal union, or a union of
+those (`Team?`, `Team | "hold"`). Jev picks one; BAML's `match` is exhaustive,
+so forgetting a branch is a compile error. An enum's `@@description` is the
+question; for a literal union, pass the question with `.judge<T>("…")`.
 
 ```baml
 type Kind = "a bug report" | "a sales pitch" | "a meeting request" | "something else";
@@ -80,10 +81,12 @@ let strategy = match (email.judge<Kind>("What kind of email is this?")) {
 };
 ```
 
-### 4. Several judgments at once with `.matches<T>()`
+### 4. Several judgments at once with `.fill<T>()`
 
-Give it a class and every field becomes a question — **one request**, one typed
-result. Enum descriptions are the criteria; field descriptions are the questions.
+`T extends reflect.AnyClass`: give it a class and every field becomes a question —
+**one request**, one typed result. Enum descriptions are the criteria; field
+descriptions are the questions. (`.matches<Triage>()` is rejected before any
+HTTP call with a pointer to `.fill`; `.fill<Team>()` is a compile error.)
 
 ```baml
 enum Team {
@@ -100,7 +103,7 @@ class Triage {
     mood: "calm" | "concerned" | "angry" @description("What is the customer's emotional state?"),
 }
 
-let tri = ticket.matches<Triage>();
+let tri = ticket.fill<Triage>();
 // Triage { urgent: true, route: Technical, churn_risk: 0.56, mood: "angry" }
 ```
 
@@ -148,15 +151,17 @@ let lines = await baml.future.all(tickets.map((t) -> { spawn { triage(t) } }));
 interface Vibes {
     function feels(self, quality: string) -> bool throws unknown;
     function how(self, quality: string) -> float throws unknown;
-    function matches<T>(self) -> T throws unknown;
-    function judge<T>(self, question: string) -> T throws unknown;
+    function matches<T>(self) -> T throws unknown;                      // enum / union
+    function judge<T>(self, question: string) -> T throws unknown;      // …with a question
+    function fill<T extends reflect.AnyClass>(self) -> T throws unknown; // class
     function ask(self, instruction: string) -> string throws unknown;
 }
 
 // Blanket implementation: every type S gets these methods.
 implements<S> Vibes for S {
     function feels(self, quality: string) -> bool { Feels(state_of(self), quality) }
-    function matches<T>(self) -> T { Matches<T>(state_of(self)) }
+    function matches<T>(self) -> T { require_choice<T>(); Matches<T>(state_of(self)) }
+    function fill<T extends reflect.AnyClass>(self) -> T { Matches<T>(state_of(self)) }
     // ...
 }
 
@@ -184,16 +189,17 @@ for the full return-type → question mapping.
 
 ## What it doesn't do
 
-Jev is a classifier. `.matches<T>()` needs `T` to be a finite set of choices
-(bool, float, enum, literal union, or a class of those). `string`, `int`,
-arrays, and maps are rejected before any HTTP call — use `.ask()` for text.
+Jev is a classifier. `.matches<T>()` needs an enum or union; `.fill<T>()` needs
+a class whose fields are `bool`, `float`, enums, or literal unions. `string`,
+`int`, arrays, and maps are rejected before any HTTP call — use `.ask()` for text.
 
 ## Files
 
 | file | what |
 | --- | --- |
 | [`baml_src/vibes.baml`](baml_src/vibes.baml) | the `Vibes` interface, blanket impl, and Jev-backed functions |
-| [`baml_src/main.baml`](baml_src/main.baml) | the tweet |
+| [`baml_src/urgent.baml`](baml_src/urgent.baml) | the tweet |
+| [`baml_src/main.baml`](baml_src/main.baml) | same thing as a function with an `--email` arg |
 | [`baml_src/inbox.baml`](baml_src/inbox.baml) | confidence gate → route → draft → rewrite loop → subject |
 | [`baml_src/triage.baml`](baml_src/triage.baml) | enums, literal unions, class fan-out, ints, concurrency |
 | [`baml_src/vibes_test.baml`](baml_src/vibes_test.baml) | offline tests that inspect the Jev request shape |

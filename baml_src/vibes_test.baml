@@ -30,3 +30,16 @@ test "the blanket impl is available on every type" {
     assert.not_null(f1);
     assert.not_null(f2)
 }
+
+test "matches<T> rejects a class before any request; fill<T> is for that" {
+    let threw = false;
+    let _ = sample_tickets()[0].matches<Triage>() catch_all (e) {
+        let bad: baml.errors.InvalidArgument => {
+            assert.contains(bad.message, "use fill<T>()");
+            threw = true;
+            null
+        },
+        _ => null,
+    };
+    assert.is_true(threw)
+}
