@@ -5,7 +5,7 @@
 and [BAML](https://boundaryml.com).
 
 ```baml
-let email = baml.io.input(null);
+let email = baml.io.input("email: ");
 
 if (email.feels("urgent")) {
     baml.io.println(email.ask("Draft a reply"));
