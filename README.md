@@ -32,6 +32,7 @@ set -a; source .env; set +a
 echo "prod is down and customers can't log in" | baml run urgent
 baml run inbox -- --email "any chance you have 30 min next week to chat?"
 baml run demo                    # enums, literal unions, class fan-out, ints…
+git log --format=%s | baml run grep_with_vibes -- --feeling "scary to revert"
 baml test                        # offline — inspects the Jev requests, no key needed
 ```
 
@@ -135,13 +136,28 @@ while (attempts < 5 && draft.feels("full of corporate jargon")) {
 }
 ```
 
-### 7. Do it concurrently
+### 7. Do it concurrently — and from the shell
 
-Because it's a real language, judging a batch is `spawn` + `await`.
+Because it's a real language, judging a batch is `spawn` + `await`, and a
+function that reads stdin is a shell tool. `grep_with_vibes` is grep where the
+pattern is a feeling:
 
 ```baml
-let lines = await baml.future.all(tickets.map((t) -> { spawn { triage(t) } }));
+function grep_with_vibes(feeling: string) -> void {
+    let lines = read_stdin_lines();
+    let hits = await baml.future.all(lines.map((l) -> { spawn { l.feels(feeling) } }));
+    // print lines[i] where hits[i]
+}
 ```
+
+```sh
+$ git log --format=%s | baml run grep_with_vibes -- --feeling "like it would be scary to revert"
+Prevent GC starvation across spawn handoffs (#4847)
+Defer completion GC and reclaim idle native heaps (#4844)
+Trigger full GC from reserved object-slot spending (#4840)
+```
+
+Forty commit subjects, judged in parallel, under a second.
 
 ## How `.feels()` works
 
@@ -202,4 +218,5 @@ a class whose fields are `bool`, `float`, enums, or literal unions. `string`,
 | [`baml_src/main.baml`](baml_src/main.baml) | same thing as a function with an `--email` arg |
 | [`baml_src/inbox.baml`](baml_src/inbox.baml) | confidence gate → route → draft → rewrite loop → subject |
 | [`baml_src/triage.baml`](baml_src/triage.baml) | enums, literal unions, class fan-out, ints, concurrency |
+| [`baml_src/grep_with_vibes.baml`](baml_src/grep_with_vibes.baml) | grep, but the pattern is a feeling — a stdin-driven shell tool |
 | [`baml_src/vibes_test.baml`](baml_src/vibes_test.baml) | offline tests that inspect the Jev request shape |

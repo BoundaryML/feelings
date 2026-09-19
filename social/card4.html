@@ -1,0 +1,18 @@
+<!doctype html><html><head><meta charset="utf-8"><title>grep_with_vibes</title><link rel="stylesheet" href="_min.css"></head><body>
+<div class="win">
+  <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="title">grep_with_vibes.baml</span><img class="lamb" src="baml-lamb.png" alt=""></div>
+<pre style="font-size:24px"><span class="k">function</span> <span class="f">grep_with_vibes</span><span class="p">(</span>feeling<span class="p">:</span> <span class="ty">string</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="ty">void</span> <span class="p">{</span>
+  <span class="k">let</span> lines <span class="p">=</span> <span class="f">read_stdin_lines</span><span class="p">();</span>
+  <span class="k">let</span> hits <span class="p">=</span> <span class="k">await</span> baml<span class="p">.</span>future<span class="p">.</span><span class="f">all</span><span class="p">(</span>
+    lines<span class="p">.</span><span class="f">map</span><span class="p">((</span>l<span class="p">)</span> <span class="p">-&gt;</span> <span class="p">{</span> <span class="k">spawn</span> <span class="p">{</span> l<span class="p">.</span><span class="f">feels</span><span class="p">(</span>feeling<span class="p">)</span> <span class="p">}</span> <span class="p">})</span>
+  <span class="p">);</span>
+  <span class="c">// print lines[i] where hits[i]</span>
+<span class="p">}</span>
+
+<span class="c">$</span> git log --format=%s | baml run grep_with_vibes -- \
+    --feeling <span class="s">"like it would be scary to revert"</span>
+<span class="r">Prevent GC starvation across spawn handoffs (#4847)
+Defer completion GC and reclaim idle native heaps (#4844)
+Trigger full GC from reserved object-slot spending (#4840)</span></pre>
+</div>
+</body></html>
