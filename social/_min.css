@@ -7,5 +7,17 @@ body{width:1200px;height:700px;display:flex;align-items:center;justify-content:c
 .bar{height:74px;display:flex;align-items:center;position:relative;margin:0 -24px}
 .dot{width:16px;height:16px;border-radius:50%;background:#4b3a5f;margin-right:14px}
 .title{position:absolute;left:0;right:0;text-align:center;color:#9a8ab0;font-size:20px}
-pre{margin:0;font-size:30px;line-height:1.5;color:#efe9f7;white-space:pre;font-family:inherit}
-.k{color:#ff6b95}.f{color:#f7a8e0}.s{color:#e3d1ff}.c{color:#7a6a90}.r{color:#8ee8b8}
+.lamb{position:absolute;right:0;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:8px}
+pre{margin:0;font-size:30px;line-height:1.5;color:#e9e2f4;white-space:pre;font-family:inherit}
+/* syntax */
+.k{color:#ff5c8a}            /* keywords: let if function implements for class return */
+.ty{color:#7dd3fc}           /* types: string bool float Team Triage S T */
+.f{color:#f7a8e0}            /* function/method names */
+.s{color:#c4b5fd}            /* strings */
+.i{color:#9ee7c8}            /* ${...} interpolation inside strings */
+.n{color:#fdba74}            /* numbers */
+.at{color:#a78bfa}           /* @description */
+.c{color:#7a6a90}            /* comments */
+.r{color:#8ee8b8}            /* results in comments */
+.sf{color:#ffa3c6;font-style:italic} /* self */
+.p{color:#b9aecb}            /* punctuation */

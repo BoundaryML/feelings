@@ -1,0 +1,19 @@
+<!doctype html><html><head><meta charset="utf-8"><title>vibes.baml</title><link rel="stylesheet" href="_min.css"></head><body>
+<div class="win">
+  <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="title">vibes.baml</span><img class="lamb" src="baml-lamb.png" alt=""></div>
+<pre style="font-size:25px"><span class="c">// no new language. feels is a method on every type:</span>
+
+<span class="k">implements</span><span class="p">&lt;</span><span class="ty">S</span><span class="p">&gt;</span> <span class="ty">Vibes</span> <span class="k">for</span> <span class="ty">S</span> <span class="p">{</span>
+  <span class="k">function</span> <span class="f">feels</span><span class="p">(</span><span class="sf">self</span><span class="p">,</span> quality<span class="p">:</span> <span class="ty">string</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="ty">bool</span> <span class="p">{</span>
+    <span class="f">Feels</span><span class="p">(</span><span class="f">state_of</span><span class="p">(</span><span class="sf">self</span><span class="p">),</span> quality<span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c">// the return type is the question. bool → Jev</span>
+<span class="k">function</span> <span class="f">Feels</span><span class="p">(</span>state<span class="p">:</span> <span class="ty">string</span><span class="p">,</span> quality<span class="p">:</span> <span class="ty">string</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="ty">bool</span> <span class="p">{</span>
+  client<span class="p">:</span> <span class="s">"typesafeai/jev-latest"</span>
+  prompt<span class="p">:</span> <span class="s">`<span class="i">${role("instructions")}</span> Does this feel <span class="i">${quality}</span>?
+           <span class="i">${role("user")}</span> <span class="i">${state}</span>`</span>
+<span class="p">}</span></pre>
+</div>
+</body></html>

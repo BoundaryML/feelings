@@ -1,10 +1,10 @@
 <!doctype html><html><head><meta charset="utf-8"><title>urgent.baml</title><link rel="stylesheet" href="_min.css"></head><body>
 <div class="win">
-  <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="title">urgent.baml</span></div>
-<pre><span class="k">let</span> email = baml.io.<span class="f">input</span>();
+  <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="title">urgent.baml</span><img class="lamb" src="baml-lamb.png" alt=""></div>
+<pre><span class="k">let</span> email <span class="p">=</span> baml<span class="p">.</span>io<span class="p">.</span><span class="f">input</span><span class="p">();</span>
 
-<span class="k">if</span> (email.<span class="f">feels</span>(<span class="s">"urgent"</span>)) {
-  baml.io.<span class="f">println</span>(email.<span class="f">ask</span>(<span class="s">"Draft a reply"</span>));
-}</pre>
+<span class="k">if</span> <span class="p">(</span>email<span class="p">.</span><span class="f">feels</span><span class="p">(</span><span class="s">"urgent"</span><span class="p">))</span> <span class="p">{</span>
+  baml<span class="p">.</span>io<span class="p">.</span><span class="f">println</span><span class="p">(</span>email<span class="p">.</span><span class="f">ask</span><span class="p">(</span><span class="s">"Draft a reply"</span><span class="p">));</span>
+<span class="p">}</span></pre>
 </div>
 </body></html>
